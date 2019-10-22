@@ -2,7 +2,9 @@
 ## 技术框架
 1. 前端采用`Typescript + vue + vuex + vue-router + vue-property-decorator + vuex-class + vuex-module-decorators`架构，兼容IE8+
 2. 调试、开发、构建使用`Webpack 4.0 + vue-cli3`，支持Typescript + ES6语法
-3. 项目已集成`Sass` `axios` `webpack-spritesmith` `postcss-px2rem`等插件或类库，详情请查看vue.config.js
+3. 项目样式支持Sass,css
+4. 异步请求使用`axios`，并在`src/common/script/untils/requst.ts`中做了拦截器封装
+5. 项目已集成 `webpack-spritesmith` `postcss-px2rem`等插件或类库，详情请查看vue.config.js
 
 ## hybrid多页面项目及模块
 1. 因为是内嵌页，不使用vue-router实现路由,所有的页面都采用直出的形式
@@ -31,7 +33,7 @@
 使用方法请参照'https://www.cnblogs.com/guangixn/p/10682131.html'
 
 ## postcss-px2rem
-> vue项目利用postcss-px2rem适配不同屏幕,将px转换成rem
+> vue项目利用postcss-px2rem适配不同屏幕,开发者无需关心px和rem的换算，只要在将px转换成rem
 
 ### 使用方法
 1. 安装`postcss-px2rem`执行`npm install postcss-px2rem --save`
@@ -102,7 +104,7 @@ async getProductList() {
 |-- public                          // 页面模板
 |-- src                             // 源码目录
 |   |-- api                         // 各个页面异步请求的集合
-|   |-- common                       // 页面的公共模块
+|   |-- common                      // 页面的公共模块
 |   |   |--font                     // 页面引用的公共字体，icon-fongt
 |   |   |--images                   // 页面的公共图片
 |   |   |   |--icon                 // 存放各个页面的图标，使用webpack-spritesmith拼成一张图
@@ -146,3 +148,7 @@ async getProductList() {
 ## 常用命令
 1. `npm run serve` 开发时使用，将启动本地服务
 2. `npm run build` 构建项目，用于生产环境发布
+
+## 未来规划
+1. 开发与之配套的组件库，工具函数和自定义指令集合
+2. 收集项目中可能用到的正则表达式和jsbridge方法
