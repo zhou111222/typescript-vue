@@ -1,10 +1,11 @@
 # 项目开发说明
 ## 技术框架
 1. 前端采用`Typescript + vue + vuex + vue-router + vue-property-decorator + vuex-class + vuex-module-decorators`架构，兼容IE8+
-2. 调试、开发、构建使用`Webpack 4.0 + vue-cli3`，支持Typescript + ES6语法
-3. 项目样式支持Sass,css
-4. 异步请求使用`axios`，并在`src/common/script/untils/requst.ts`中做了拦截器封装
-5. 项目已集成 `webpack-spritesmith` `postcss-px2rem`等插件或类库，详情请查看vue.config.js
+2. 服务端部署采用`PM2 + express + nginx`。PM2管理和守护node进程。express开启node服务。nginx做反向代理服务，服务器为腾讯云服务器
+3. 调试、开发、构建使用`Webpack 4.0 + vue-cli3`，支持Typescript + ES6语法
+4. 项目样式支持Sass,css
+5. 异步请求使用`axios`，并在`src/common/script/untils/requst.ts`中做了拦截器封装
+6. 项目已集成 `webpack-spritesmith` `postcss-px2rem` `page-skeleton-webpack-plugin`等插件或类库，详情请查看vue.config.js
 
 ## hybrid多页面项目及模块
 1. 因为是内嵌页，不使用vue-router实现路由,所有的页面都采用直出的形式
@@ -13,6 +14,9 @@
 ## M端h5页面单页面项目及模块
 1. m端h5页面以及嵌套使用vue-router,首页采用直出的形式，其他页面按需加载
 2. 每个页面有自己的components,另外整个项目有自己公共的components供其他页面使用
+
+## express,nginx，PM2使用
+使用方法请参照'https://blog.csdn.net/u012757419/article/details/99451635'
 
 ## webpack-spritesmith
 > 为了优化图标加载，项目使用`webpack-spritesmith`自动合并图标为sprite
@@ -41,6 +45,10 @@
 3. 在每个页面的index.html中插入一段脚本，脚本功能为根据dpr给html一个fongt-size值。
 
 详情请参考'https://www.jianshu.com/p/8cb5fdce58bb'
+
+## page-skeleton-webpack-plugin
+> vue项目利用page-skeleton-webpack-plugin为页面生成骨架屏，由于vue-cli3脚手架创建的项目会压缩html干掉<!-- shell -->导致骨架屏不生效，所以生成的骨架屏需要npm run serve生成骨架屏代码，然后手动到shell文件夹下复制相应的骨架屏代码放到页面的模板里面。html部分覆盖掉模板html部分，style部分放到head里面
+详情请参考'https://segmentfault.com/a/1190000020416483?utm_source=tag-newest'
 
 ## 异步请求guifan
 1. 使用axios、async、await开发
@@ -102,6 +110,7 @@ async getProductList() {
 ```
 |-- node_modules                    // 依赖包
 |-- public                          // 页面模板
+|-- shell                           // 骨架屏页面代码
 |-- src                             // 源码目录
 |   |-- api                         // 各个页面异步请求的集合
 |   |-- common                      // 页面的公共模块
@@ -135,6 +144,7 @@ async getProductList() {
 |--browserlistrc                    // 目标浏览器配置表
 |-- static                          // 静态文件，比如一些图片，json数据等
 |-- gitignore                       // git上传需要忽略的文件格式
+|-- app.js                          // node服务的脚本
 |-- babelr.config.js                // ES6语法编译配置
 |-- package-lock.json               // 锁定安装时的包的版本号
 |-- package.json                    // 项目基本信息
@@ -148,7 +158,13 @@ async getProductList() {
 ## 常用命令
 1. `npm run serve` 开发时使用，将启动本地服务
 2. `npm run build` 构建项目，用于生产环境发布
+3. `pm2 start app.js --name ts-vue-test` 使用pm2来管理node服务(只可用在服务器端)
+4. `start nginx` 开启nginx服务
+5. `nginx -s stop` 关闭所有nginx服务
+6. `nginx -s reload` 重启nginx服务
+
 
 ## 未来规划
 1. 开发与之配套的组件库，工具函数和自定义指令集合
 2. 收集项目中可能用到的正则表达式和jsbridge方法
+3. 优化项目，减少包体积

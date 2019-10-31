@@ -63,6 +63,7 @@ module.exports = {
             }
         }
     },
+
     devServer: {
         index: 'home.html', //默认启动serve 打开home页面
         open: true,
@@ -96,7 +97,6 @@ module.exports = {
                 filename: "css/[name].[contenthash:8].css"
             }]);
         }
-
     },
     configureWebpack: config => {
 
