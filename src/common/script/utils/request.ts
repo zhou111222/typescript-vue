@@ -9,14 +9,14 @@
      baseURL: process.env.NODE_ENV === "production" ? 'https://api.quanfenshop.com' : 'https://api.quanfenshop.com',
      timeout: 5000, // 请求超时时间
  });
- /* request拦截器 */
+ /* 请求拦截器 */
  service.interceptors.request.use((config: any) => {
      return config;
  }, (error: any) => {
      Promise.reject(error);
  });
 
- /* respone拦截器 */
+ /* 响应拦截器 */
  service.interceptors.response.use(
      (response: any) => {
         return response;

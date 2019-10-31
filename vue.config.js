@@ -1,11 +1,11 @@
 let path = require('path')
 let glob = require('glob')
 let SpritesmithPlugin = require('webpack-spritesmith')
+let { SkeletonPlugin } = require("page-skeleton-webpack-plugin")
 
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
-
 //配置pages多页面获取当前文件夹下的html和js
 function getEntry(globPath) {
     let entries = {},
@@ -20,7 +20,7 @@ function getEntry(globPath) {
 
         // console.log(pathname)
         entries[pathname] = {
-            entry: 'src/' + tmp[0] + '/' + tmp[1] + '/' + tmp[1] + '.ts',
+            entry: resolve('src/' + tmp[0] + '/' + tmp[1] + '/' + tmp[1] + '.ts'),
             template: 'src/' + tmp[0] + '/' + tmp[1] + '/' + tmp[2],
             title: tmp[2],
             filename: tmp[2]
@@ -49,10 +49,12 @@ let pages = getEntry('./src/pages/**?/*.html');
 
 module.exports = {
     lintOnSave: false, //禁用eslint
-    publicPath: process.env.NODE_ENV === "production" ? 'https://m.secoo.com/' : '/',
+    publicPath: '/',
+    outputDir: 'dist',
     productionSourceMap: false,
     pages,
     css: {
+        extract: true,
         loaderOptions: {
             postcss: {
                 plugins: [
@@ -65,24 +67,10 @@ module.exports = {
         index: 'home.html', //默认启动serve 打开home页面
         open: true,
         host: '',
-        port: 8088,
+        port: '8082',
         https: false,
         hotOnly: false,
-        proxy: {
-            '/api': {
-                target: 'http://localhost:8088/api',
-                changeOrigin: true, //允许跨域 
-                pathRewrite: {
-                    '^/api': ''
-                        /*
-                         *这里的配置是正则表达式，以/api开头的路径/api将会被‘http://localhost:3000/api'替换掉
-                         *假如后台文档的接口是 "https://sus.secoo.com/user/add"
-                         *前端调取API接口应写：axios.get('/api/user/add')
-                         */
-                }
-            }
-        }, // 设置代理
-        before: app => {}
+        proxy: ""
     },
     chainWebpack: config => {
         config.module
@@ -111,12 +99,7 @@ module.exports = {
 
     },
     configureWebpack: config => {
-        if (process.env.NODE_ENV === "production") {
-            config.output = {
-                path: path.join(__dirname, "./dist"),
-                filename: "js/[name].[contenthash:8].js"
-            };
-        }
+
         // 定义一个插件数组。用来覆盖，在里面使用我们的主角
         const Plugins = [
                 new SpritesmithPlugin({
@@ -151,6 +134,11 @@ module.exports = {
                         algorithm: 'binary-tree', // binary-tree,top-down从左到右和从上到下生成方向.
                         padding: 10
                     }
+                }),
+                new SkeletonPlugin({
+                    pathname: path.resolve(__dirname, './shell'), // 用来存储 shell 文件的地址
+                    staticDir: path.resolve(__dirname, './dist'), // 最好和 `output.path` 相同
+                    routes: ['/', '/home'], // 将需要生成骨架屏的路由添加到数组中
                 })
             ]
             // config里面，覆盖掉以前的，要不然不好使
