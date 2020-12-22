@@ -14,7 +14,7 @@
         "chalk": "^2.4.2",
         "core-js": "^2.6.5",
         "fs": "0.0.1-security",
-        "node-notifier": "^6.0.0",
+        "node-notifier": "^8.0.1",
         "path": "^0.12.7",
         "postcss": "^7.0.18",
         "postcss-plugin-px2rem": "^0.8.1",
